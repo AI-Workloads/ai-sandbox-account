@@ -2,7 +2,7 @@ module "server1" {
   source                    = "../../modules/ec2"
   ami_id                    = "ami-0056d98d3e05cdbd9"
   key_name                  = "test-key"
-  sg_ids                    = flatten(["ec2-sg-euwe1-app-01"])
+  sg_ids                    = flatten(["sg-0c7c16af62ebd394c"])
   ec2_name                  = "le1pocad001"
   avb_zone                  = "eu-west-1a"
   subnet_id                 = "subnet-05d5191209c939561"
