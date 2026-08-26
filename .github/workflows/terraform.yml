@@ -1,0 +1,40 @@
+name: Terraform Deployment
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Please mention the environment to deploy the change
+        type: choice
+        options:
+          - dev
+          - prd
+          - uat
+          - ' '
+        default: ' '
+        required: true
+      action:
+        description: Please describe the terraform action to perform
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+
+jobs:
+  terraform:
+    name: terraform
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    defaults:
+      run:
+        working-directory: terraform/environments/${{ inputs.environment }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+
+      - name: setup aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::739287607261:role/epmt-github-executions-central-role
+          aws-region: eu-west-1
