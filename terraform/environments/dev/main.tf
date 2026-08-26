@@ -4,7 +4,6 @@ module "server1" {
   key_name                  = "test-key"
   sg_ids                    = flatten(["ec2-sg-euwe1-app-01"])
   ec2_name                  = "le1pocad001"
-  public_ip                 = null
   avb_zone                  = "eu-west-1a"
   subnet_id                 = "subnet-05d5191209c939561"
   instance_type             = "t2.micro"
