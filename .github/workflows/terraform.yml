@@ -41,3 +41,29 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::739287607261:role/epmt-github-executions-central-role
           aws-region: eu-west-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.6
+
+      - name: tf format
+        run: terraform fmt -check
+
+      - name: tf init
+        run: terraform init
+
+      - name: tf plan
+        if: inputs.action == 'plan'
+        run: terraform plan -out=tfplan
+
+      - name: tf plan & apply
+        if: inputs.action == 'apply'
+        run:  |
+          terraform plan -out=tfplan
+          terraform apply --auto-approve tfplan
+
+      - name: tf destroy
+        if: inputs.action == 'destroy'
+        run: terraform destroy --auto-approve
+        
