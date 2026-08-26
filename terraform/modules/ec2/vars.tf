@@ -5,7 +5,6 @@ variable "ec2_count" {
   default = "1"
 }
 variable "key_name" {}
-variable "public_ip" {}
 variable "ec2_name" {
   description = "EC2 Instance Name"
 }
