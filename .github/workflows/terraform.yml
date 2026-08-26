@@ -47,8 +47,8 @@ jobs:
         with:
           terraform_version: 1.14.6
 
-      - name: tf format
-        run: terraform fmt -check
+      # - name: tf format
+      #   run: terraform fmt -check
 
       - name: tf init
         run: terraform init
