@@ -26,5 +26,5 @@ sudo systemctl restart sshd
     http_tokens            = "required"
     instance_metadata_tags = "enabled"
   }
-  tags        = merge(tomap({ "Name" = var.ec2_name }), var.default_tags)
+  tags        = merge(tomap({ "Name" = var.ec2_name }), var.tags)
 }
