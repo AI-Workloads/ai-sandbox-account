@@ -3,7 +3,6 @@ resource "aws_instance" "ec2_instance" {
   ami                     = var.ami_id
   availability_zone       = var.avb_zone
   instance_type           = var.instance_type
-  public_ip               = var.public_ip
   subnet_id               = var.subnet_id
   key_name                = var.key_name
   iam_instance_profile    = var.iam_instance_profile
