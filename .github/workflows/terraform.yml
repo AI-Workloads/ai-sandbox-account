@@ -21,8 +21,9 @@ on:
           - destroy
 
 jobs:
-  terraform:
-    name: terraform
+  terraform-plan:
+    if: inputs.action == 'plan' || inputs.action == 'apply'
+    name: terraform-plan
     runs-on: ubuntu-latest
     permissions: 
       id-token: write
@@ -57,13 +58,79 @@ jobs:
         if: inputs.action == 'plan'
         run: terraform plan -out=tfplan
 
+      # - name: tf plan & apply
+      #   if: inputs.action == 'apply'
+      #   run: terraform apply --auto-approve tfplan
+
+      # - name: tf destroy
+      #   if: inputs.action == 'destroy'
+      #   run: terraform destroy --auto-approve
+
+  terraform-apply:
+    name: terraform-apply
+    if: inputs.action == 'plan' || inputs.action == 'apply'
+    needs: [terraform-plan]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    environment: ${{ inputs.environment }}
+    defaults:
+      run:
+        working-directory: terraform/environments/${{ inputs.environment }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+
+      - name: setup aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::739287607261:role/epmt-github-executions-central-role
+          aws-region: eu-west-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.6
+
+      - name: tf init
+        run: terraform init
+
       - name: tf plan & apply
         if: inputs.action == 'apply'
-        run:  |
-          terraform plan -out=tfplan
-          terraform apply --auto-approve tfplan
+        run: terraform apply --auto-approve tfplan
+
+  terraform-destroy:
+    name: terraform-destroy
+    if: inputs.action == 'destroy' || inputs.action == 'apply'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    environment: ${{ inputs.environment }}
+    defaults:
+      run:
+        working-directory: terraform/environments/${{ inputs.environment }}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+
+      - name: setup aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::739287607261:role/epmt-github-executions-central-role
+          aws-region: eu-west-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.14.6
+
+      - name: tf init
+        run: terraform init
 
       - name: tf destroy
         if: inputs.action == 'destroy'
         run: terraform destroy --auto-approve
-        
