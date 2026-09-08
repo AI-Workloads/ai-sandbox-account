@@ -3,5 +3,10 @@ locals {
     rhel         = "${path.module}/userdata/rhel.sh"
     ubuntu       = "${path.module}/userdata/ubuntu.sh"
   }
-  user_data = file(local.user_data_files[var.platform])
+  user_data = templatefile(
+    local.user_data_files[var.platform],
+    {
+      ec2_name = var.ec2_name
+    }
+  )
 }
