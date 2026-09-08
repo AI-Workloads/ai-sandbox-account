@@ -16,3 +16,16 @@ variable "sg_ids" {
 variable "tags" {}
 variable "iam_instance_profile" {}
 variable "disable_api_termination" {}
+variable "platform" {
+  description = "Operating system platform"
+  type        = string
+  validation {
+    condition = contains([
+      "rhel",
+      "ubuntu",
+      "amazon_linux",
+      "windows"
+    ], var.platform)
+    error_message = "Platform must be one of: rhel, ubuntu, amazon_linux, windows."
+  }
+}
