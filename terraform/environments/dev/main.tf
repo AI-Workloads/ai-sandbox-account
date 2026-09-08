@@ -10,4 +10,5 @@ module "server1" {
   tags                      = merge(var.default_tags, tomap({ "SSM-Automation" = "LinuxTrue" }), tomap({ "PatchGroup" = "STANDARD-REDHAT-ENTERPRISE-LINUX" }))
   iam_instance_profile      = "dcs_iam_ssm"
   disable_api_termination   = "false"
+  platform                  = "rhel"
 }
