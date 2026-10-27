@@ -7,7 +7,7 @@ module "server1" {
   avb_zone                  = "eu-west-1a"
   subnet_id                 = "subnet-05d5191209c939561"
   instance_type             = "t2.micro"
-  tags                      = merge(var.default_tags, tomap({ "SSM-Automation" = "LinuxTrue" }), tomap({ "PatchGroup" = "STANDARD-REDHAT-ENTERPRISE-LINUX" }))
+  tags                      = merge(var.default_tags)
   iam_instance_profile      = "dcs_iam_ssm"
   disable_api_termination   = "false"
   platform                  = "rhel"
